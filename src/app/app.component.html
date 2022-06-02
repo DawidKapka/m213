@@ -1,0 +1,14 @@
+<div class="container">
+    <div class="healthbar-container">
+        <div class="healthbar">
+            <div class="healthbar__health" [style]="{width: health + '%'}"></div>
+        </div>
+    </div>
+    <div class="word-typer-container">
+        <div class="char-wrapper" #wordContainer>
+            <div *ngFor="let char of word.split('')">
+                <div class="char-container"><p class="char">{{char.toUpperCase()}}</p></div>
+            </div>
+        </div>
+    </div>
+</div>
