@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
 
   private handleFinishedWord() {
     this.wordIndex++;
-    if (this.wordIndex === words.length - 1) this.wordIndex = 0;
+    if (this.wordIndex === words.length) this.wordIndex = 0;
     this.word = words[this.wordIndex];
     setTimeout(() => {
       this.clearTypedLetters();

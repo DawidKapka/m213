@@ -4,6 +4,9 @@
             <div class="healthbar__health" [style]="{width: health + '%'}"></div>
         </div>
     </div>
+    <div class="boss">
+        <img src="/assets/boss.png" alt="boss" class="boss__image">
+    </div>
     <div class="word-typer-container">
         <div class="char-wrapper" #wordContainer>
             <div *ngFor="let char of word.split('')">
