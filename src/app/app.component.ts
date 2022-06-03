@@ -39,9 +39,9 @@ export class AppComponent implements OnInit {
       this.wordIndex++;
       if (this.wordIndex === words.length) this.wordIndex = 0;
       this.word = words[this.wordIndex];
-      this.health -= 10;
+      this.health -= (1 / 3) * 100;
       this.points += 100;
-      this.wordFallDelay += 50;
+      this.wordFallDelay += 250;
       if (this.wordFallDelay > 1200) this.wordFallDelay = 1200;
       clearInterval(this.wordFallInterval);
       this.wordFallInterval = setInterval(() => {
@@ -128,6 +128,7 @@ export class AppComponent implements OnInit {
   startGame() {
     this.gameStarted = true;
     this.gameFinished = false;
+    this.wordFallDelay = 1200;
     this.wordFallInterval = setInterval(() => {
       this.moveWord()
     }, this.wordFallDelay);
