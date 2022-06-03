@@ -40,7 +40,6 @@ export class AppComponent implements OnInit {
       if (this.wordIndex === words.length) this.wordIndex = 0;
       this.word = words[this.wordIndex];
       this.health -= (1 / 3) * 100;
-      this.points += 100;
       this.wordFallDelay += 250;
       if (this.wordFallDelay > 1200) this.wordFallDelay = 1200;
       clearInterval(this.wordFallInterval);
@@ -49,7 +48,7 @@ export class AppComponent implements OnInit {
       }, this.wordFallDelay);
       this.clearTypedLetters();
       this.setElement(0, 'selected');
-      if (this.health === 0) {
+      if (this.health <= 1) {
         this.stopGame();
       }
     }
