@@ -17,6 +17,7 @@
       border: 4px solid black;
       border-radius: 6px;
       background-color: lightgray;
+      z-index: 99;
 
       &__health {
         background-color: red;
@@ -66,8 +67,86 @@
 
   .boss {
     width: 100%;
-    height: 100%;
+    height: 100vh;
     display: flex;
     justify-content: space-around;
+
+    &__image {
+      height: 100%;
+      position: absolute;
+      bottom: 0;
+    }
+  }
+
+  .falling-word {
+    width: 100vw;
+    display: flex;
+    justify-content: space-around;
+    position: absolute;
+    height: calc(100vh - 340px);
+    top: 0;
+
+    .word {
+      position: relative;
+      font-size: 64px;
+      font-weight: bold;
+
+      p {
+        margin: 0;
+        color: red;
+      }
+    }
+  }
+
+  .points {
+    font-size: 48px;
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    color: red;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .logo {
+    transform: scale(0.5) translateY(50%);
+
+    &__container {
+      width: 100vw;
+      display: flex;
+      justify-content: space-around;
+    }
+  }
+
+  .start-button {
+    width: 100vw;
+    display: flex;
+    justify-content: space-around;
+
+    &__button {
+      height: 64px;
+      width: 256px;
+      font-size: 36px;
+      box-shadow: 0 2px 4px black;
+    }
+  }
+
+  .lost {
+    width: 100vw;
+    display: flex;
+    justify-content: space-around;
+
+    &__container {
+      width: 50%;
+      height: 200px;
+      font-size: 36px;
+      background-color: white;
+      border: 4px solid black;
+      border-radius: 4px;
+      margin-top: 64px;
+      text-align: center;
+    }
   }
 }

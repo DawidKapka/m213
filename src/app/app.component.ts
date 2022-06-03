@@ -11,22 +11,55 @@ export class AppComponent implements OnInit {
   health: number = 100;
   word: string;
   wordIndex: number;
-  @ViewChild('wordContainer') wordContainer: ElementRef;
   private selectedChar: string;
+  private currentWordTransformation = 0;
+  private wordFallDelay: number = 1200;
+  private wordFallInterval = 0;
+  public points: number = 0;
+  public gameFinished: boolean = false;
+  public gameStarted: boolean = false;
+
+  @ViewChild('wordContainer') wordContainer: ElementRef;
+  @ViewChild('fallingWord') fallingWord: ElementRef;
 
   ngOnInit() {
-    window.addEventListener('keyup', (event: KeyboardEvent) => {
-      this.handleKeyPress(event);
-    })
-    this.word = words[0];
-    this.wordIndex = 0;
-    setTimeout(() => this.setElement(0, 'selected'), 100)
   }
 
   private handleKeyPress(event: KeyboardEvent) {
     if (event.key.match(/[a-z]/i)) {
       this.handleLetterPress(event.key);
     }
+  }
+
+  private moveWord() {
+    const word = this.fallingWord.nativeElement.children[0] as HTMLElement;
+    this.currentWordTransformation += 10;
+    if (this.currentWordTransformation === 110) {
+      this.currentWordTransformation = 0;
+      this.wordIndex++;
+      if (this.wordIndex === words.length) this.wordIndex = 0;
+      this.word = words[this.wordIndex];
+      this.health -= 10;
+      this.points += 100;
+      this.wordFallDelay += 50;
+      if (this.wordFallDelay > 1200) this.wordFallDelay = 1200;
+      clearInterval(this.wordFallInterval);
+      this.wordFallInterval = setInterval(() => {
+        this.moveWord()
+      }, this.wordFallDelay);
+      this.clearTypedLetters();
+      this.setElement(0, 'selected');
+      if (this.health === 0) {
+        this.stopGame();
+      }
+    }
+    word.style.top = `${this.currentWordTransformation}%`;
+  }
+
+  private stopGame() {
+    clearInterval(this.wordFallInterval);
+    this.gameFinished = true;
+    this.gameStarted = false;
   }
 
   private handleLetterPress(key: string) {
@@ -45,6 +78,15 @@ export class AppComponent implements OnInit {
     this.wordIndex++;
     if (this.wordIndex === words.length) this.wordIndex = 0;
     this.word = words[this.wordIndex];
+    this.currentWordTransformation = 0;
+    this.wordFallDelay -= 50;
+    if (this.wordFallDelay < 100) this.wordFallDelay = 100;
+    this.points += 100;
+    clearInterval(this.wordFallInterval);
+    this.wordFallInterval = setInterval(() => {
+      this.moveWord()
+    }, this.wordFallDelay);
+    (this.fallingWord.nativeElement.children[0] as HTMLElement).style.top = `${this.currentWordTransformation}%`;
     setTimeout(() => {
       this.clearTypedLetters();
       this.setElement(0, 'selected');
@@ -81,5 +123,22 @@ export class AppComponent implements OnInit {
         (el as HTMLElement).children[0].classList.remove('typed');
       }
     }
+  }
+
+  startGame() {
+    this.gameStarted = true;
+    this.gameFinished = false;
+    this.wordFallInterval = setInterval(() => {
+      this.moveWord()
+    }, this.wordFallDelay);
+    window.addEventListener('keyup', (event: KeyboardEvent) => {
+      this.handleKeyPress(event);
+    })
+    this.word = words[0];
+    this.wordIndex = 0;
+    setTimeout(() => {
+      this.setElement(0, 'selected');
+      (this.fallingWord.nativeElement as HTMLElement).style.transform = 'translateY(0px)';
+    }, 100);
   }
 }
